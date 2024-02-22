@@ -53,7 +53,7 @@ resource "aws_internet_gateway" "ig" {
 
 # Elastic-IP (eip) for NAT
 resource "aws_eip" "nat_eip" {
-  domain = "vpc"
+  domain     = "vpc"
   depends_on = [aws_internet_gateway.ig]
 }
 
@@ -172,14 +172,19 @@ resource "aws_eip" "jenkins-eip" {
   domain   = "vpc"
 }
 
-# EC2 Instance
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                EC2 INSTANCE                                */
+/* -------------------------------------------------------------------------- */
 resource "aws_instance" "jenkins_ec2" {
-  ami           = "ami-0b98fa71853d8d270" 
-  instance_type = "t3.large"
-  key_name      = "DevOps-Key"
+  ami                    = "ami-0b98fa71853d8d270"
+  instance_type          = "t3.large"
+  key_name               = "DevOps-Key"
   vpc_security_group_ids = [aws_security_group.netflix-sg.id]
-  subnet_id = aws_subnet.public_subnet[0].id
-  user_data    = file("installation-script.sh")
+  subnet_id              = aws_subnet.public_subnet[0].id
+  user_data              = file("installation-script.sh")
 
   tags = {
     Name = "Jenkins-Server"
